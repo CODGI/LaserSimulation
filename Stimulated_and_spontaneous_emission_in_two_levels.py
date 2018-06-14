@@ -22,12 +22,22 @@ import scipy.integrate as spi
 import scipy.constants as spc
  
 
-N1_0 = 1
-N0_0 = 0
-n_photon = 10
-tau_n1 = 1
-T=300
-c=spc.c
-nu= c/(600*10**(-9))
-x=spc.k*T/(spc.h*nu)
-rho = 8*spc.pi*nu*nu/(spc.c**3)
+N1_0 = 1 #Initial excited state transition
+N0_0 = 0 #Initial ground state transition
+tau_n1 = 1 #Natural decay constant of excited state
+T=300 #Temperature
+c=spc.c #Speed of light
+lam = 600*10**(-9) #Wavelength of transition
+nu= c/lam
+x=spc.k*T/(spc.h*nu) #coefficient in Plancks#law
+rho_mode = 8*spc.pi*nu*nu/(spc.c**3) #Spectral mode density
+rho_energy = rho_mode*spc.h*nu
+
+A_21 = 1
+B_21 = A_21/rho_energy
+B_12 = B_21   #no degeneracy
+
+
+def f(N):
+    pass
+

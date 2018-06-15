@@ -22,22 +22,37 @@ import scipy.integrate as spi
 import scipy.constants as spc
  
 
-N1_0 = 1 #Initial excited state transition
-N0_0 = 0 #Initial ground state transition
-tau_n1 = 1 #Natural decay constant of excited state
+N1_0 = 0 #Initial excited state transition
+N0_0 = 1 #Initial ground state transition
+tau = 1 #Natural decay constant of excited state
 T=300 #Temperature
 c=spc.c #Speed of light
 lam = 600*10**(-9) #Wavelength of transition
 nu= c/lam
-x=spc.k*T/(spc.h*nu) #coefficient in Plancks#law
-rho_mode = 8*spc.pi*nu*nu/(spc.c**3) #Spectral mode density
-rho_energy = rho_mode*spc.h*nu
+x=spc.h*nu/(spc.k*T) #coefficient in Plancks#law
+B_T = 2*spc.h*(nu**3)/((np.exp(x)-1)*(c**2))
+rho_energy = 4*spc.pi*B_T/c
 
 A_21 = 1
 B_21 = A_21/rho_energy
 B_12 = B_21   #no degeneracy
 
 
-def f(N):
-    pass
+def f(N,t):
+    N0 = N[0]
+    N1 = N[1]
+    dN0 = N1/tau+A_21*N1+B_21*N1*rho_energy-B_12*N0*rho_energy
+    dN1 = -N1/tau-A_21*N1-B_21*N1*rho_energy+B_12*N0*rho_energy
+    return [dN0,dN1]
 
+t0 = 0
+tEnd = 1
+steps = 100000
+
+fig, ax = plt.subplots(1,1,figsize=(8,4))
+t = np.linspace(t0,tEnd,steps)
+
+N = spi.odeint(f,[N0_0,N1_0],t)
+
+ax.plot(t,N[:,1],label="Excited state population")
+ax.legend()

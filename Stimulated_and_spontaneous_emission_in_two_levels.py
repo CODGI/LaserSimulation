@@ -22,8 +22,8 @@ import scipy.integrate as spi
 import scipy.constants as spc
  
 
-N1_0 = 1 #Initial excited state transition
-N0_0 = 0 #Initial ground state transition
+N1_0 = 0 #Initial excited state transition
+N0_0 = 1 #Initial ground state transition
 tau = 1 #Natural decay constant of excited state
 T=100000 #Temperature
 c=spc.c #Speed of light
